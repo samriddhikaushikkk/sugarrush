@@ -1,0 +1,1126 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Little Sugar Shop</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap');
+
+:root {
+  --pink: #f5a9c4;
+  --pink2: #ffe2ec;
+  --cream: #fffaf2;
+  --brown: #694b4d;
+  --shadow: 0 8px 24px #70434b18;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #fff6f8;
+  color: var(--brown);
+  font-family: 'DM Sans', sans-serif;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+  border: 0;
+  color: inherit;
+}
+
+.app {
+  max-width: 1200px;
+  margin: auto;
+  padding: 18px;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  background: var(--cream);
+  border: 2px solid #f6d5df;
+  border-radius: 22px;
+  padding: 14px 20px;
+  box-shadow: var(--shadow);
+}
+
+.logo {
+  font: 800 25px 'Playfair Display', serif;
+  color: #bd6687;
+}
+
+.logo small {
+  display: block;
+  font: 600 10px 'DM Sans';
+  letter-spacing: 3px;
+  color: #b58a91;
+}
+
+.stats {
+  display: flex;
+  gap: 9px;
+  flex-wrap: wrap;
+}
+
+.pill {
+  background: #fff;
+  border: 1px solid #f1d4dc;
+  border-radius: 13px;
+  padding: 9px 13px;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin: 16px 0;
+  flex-wrap: wrap;
+}
+
+.tab {
+  padding: 10px 17px;
+  border-radius: 13px;
+  background: #fff;
+  border: 1px solid #f1d4dc;
+  font-weight: 800;
+}
+
+.tab.active {
+  background: #d98aaa;
+  color: white;
+  border-color: #d98aaa;
+}
+
+.view {
+  display: none;
+}
+
+.view.active {
+  display: block;
+}
+
+.panel {
+  background: var(--cream);
+  border: 2px solid #f6d5df;
+  border-radius: 22px;
+  padding: 18px;
+  box-shadow: var(--shadow);
+}
+
+h1 {
+  font: 800 clamp(27px, 4vw, 42px) 'Playfair Display';
+  margin-bottom: 7px;
+}
+
+h2 {
+  font: 800 24px 'Playfair Display';
+}
+
+h3 {
+  font-size: 16px;
+  margin-bottom: 7px;
+}
+
+.muted {
+  color: #a58289;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.game-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(260px, .8fr);
+  gap: 15px;
+}
+
+.shop-scene {
+  min-height: 350px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 18px;
+  background: linear-gradient(#fbe3ed 0 62%, #e9c9b8 62%);
+  border: 2px solid #efcbd7;
+  padding: 17px;
+}
+
+.shop-sign {
+  margin: auto;
+  text-align: center;
+  background: #fff9f0;
+  border: 3px solid #d98aaa;
+  border-radius: 16px;
+  padding: 8px 20px;
+  width: max-content;
+  max-width: 100%;
+  font: 800 25px 'Playfair Display';
+  color: #c06f8c;
+  box-shadow: 0 5px #dba9b8;
+}
+
+.window {
+  position: absolute;
+  top: 95px;
+  left: 7%;
+  width: 28%;
+  height: 115px;
+  border: 8px solid #fff8ef;
+  border-radius: 15px;
+  background: linear-gradient(135deg, #cce9e4, #f7e5ee);
+  box-shadow: 0 4px #d8b8bd;
+}
+
+.window:after {
+  content: "☁️  ☀️";
+  position: absolute;
+  inset: 12px;
+  text-align: center;
+  font-size: 27px;
+}
+
+.shelf {
+  position: absolute;
+  right: 7%;
+  top: 105px;
+  width: 34%;
+  height: 100px;
+  background: #bd8c78;
+  border: 6px solid #e9bfae;
+  border-radius: 8px;
+  display: flex;
+  align-items: end;
+  justify-content: space-around;
+  padding: 8px;
+  font-size: 31px;
+}
+
+.counter {
+  position: absolute;
+  left: 13%;
+  right: 13%;
+  bottom: 24px;
+  height: 95px;
+  background: #d994a6;
+  border: 7px solid #f6c5d2;
+  border-radius: 15px 15px 9px 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 43px;
+  box-shadow: 0 8px #b9768c;
+}
+
+.customer {
+  position: absolute;
+  bottom: 115px;
+  left: 45%;
+  font-size: 54px;
+  filter: drop-shadow(0 3px 1px #8b596044);
+  animation: bob 1.8s infinite ease-in-out;
+}
+
+@keyframes bob {
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.order-card {
+  margin-top: 12px;
+  background: #fff;
+  border: 1px solid #f2d6de;
+  border-radius: 16px;
+  padding: 13px;
+}
+
+.order-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: center;
+}
+
+.timer {
+  height: 9px;
+  background: #f6e3e8;
+  border-radius: 20px;
+  overflow: hidden;
+  margin: 9px 0;
+}
+
+.timer-fill {
+  height: 100%;
+  background: #8fbd8b;
+  width: 100%;
+  transition: width .2s linear;
+}
+
+.order-name {
+  font-weight: 800;
+}
+
+.order-emoji {
+  font-size: 27px;
+}
+
+.food-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 9px;
+  margin-top: 12px;
+}
+
+.food {
+  background: #fff;
+  border: 2px solid #f1d8df;
+  border-radius: 14px;
+  padding: 12px 5px;
+  text-align: center;
+  transition: .15s;
+}
+
+.food:hover {
+  transform: translateY(-2px);
+  border-color: #d98aaa;
+}
+
+.food.selected {
+  background: #ffe5ee;
+  border-color: #ce7e9d;
+  box-shadow: 0 0 0 2px #f6c6d6;
+}
+
+.food .emoji {
+  font-size: 30px;
+  display: block;
+}
+
+.food strong {
+  font-size: 12px;
+  display: block;
+  margin: 5px 0;
+}
+
+.food small {
+  font-size: 11px;
+  color: #a58289;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.primary, .secondary, .danger {
+  padding: 11px 15px;
+  border-radius: 12px;
+  font-weight: 800;
+}
+
+.primary {
+  background: #d98aaa;
+  color: white;
+}
+
+.secondary {
+  background: #f7e4eb;
+}
+
+.danger {
+  background: #f5d5ce;
+  color: #8d4e48;
+}
+
+.primary:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+.side-stack {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+}
+
+.goal {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 0;
+  border-bottom: 1px dashed #efd4dc;
+  font-size: 13px;
+}
+
+.goal:last-child {
+  border: 0;
+}
+
+.item-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 12px;
+}
+
+.item {
+  background: #fff;
+  border: 1px solid #f1d4dc;
+  border-radius: 16px;
+  padding: 14px;
+}
+
+.item .big {
+  font-size: 34px;
+}
+
+.item button {
+  margin-top: 9px;
+  width: 100%;
+}
+
+.item button:disabled {
+  opacity: .4;
+  cursor: not-allowed;
+}
+
+.recipe-line {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px dashed #efd4dc;
+  font-size: 13px;
+}
+
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #694b4d;
+  color: white;
+  padding: 12px 18px;
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  z-index: 5;
+  opacity: 0;
+  pointer-events: none;
+  transition: .2s;
+}
+
+.toast.show {
+  opacity: 1;
+}
+
+.modal-back {
+  position: fixed;
+  inset: 0;
+  background: #53353b88;
+  display: none;
+  place-items: center;
+  padding: 18px;
+  z-index: 10;
+}
+
+.modal-back.show {
+  display: grid;
+}
+
+.modal {
+  max-width: 420px;
+  width: 100%;
+  background: var(--cream);
+  border-radius: 22px;
+  padding: 24px;
+  text-align: center;
+  border: 3px solid #f3c9d7;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  color: #b18e95;
+  font-size: 11px;
+}
+
+@media(max-width:760px) {
+  .game-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .shop-scene {
+    min-height: 310px;
+  }
+
+  .window {
+    top: 95px;
+  }
+
+  .shelf {
+    top: 108px;
+  }
+
+  .food-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<header>
+  <div class="logo">
+    Little Sugar Shop
+    <small>YOUR TINY DREAM CAFÉ</small>
+  </div>
+
+  <div class="stats">
+    <div class="pill">🪙 <span id="coins">50</span></div>
+    <div class="pill">⭐ Level <span id="level">1</span></div>
+    <div class="pill">📅 Day <span id="day">1</span></div>
+    <div class="pill">😊 <span id="rep">5</span> rep</div>
+  </div>
+</header>
+
+<nav class="tabs">
+  <button class="tab active" data-view="cafe">🏡 Café</button>
+  <button class="tab" data-view="upgrades">🛍️ Shop & upgrades</button>
+  <button class="tab" data-view="recipes">📖 Recipe book</button>
+</nav>
+
+<section id="cafe" class="view active">
+  <div class="game-grid">
+
+    <div class="panel">
+      <h1>Your little café</h1>
+      <p class="muted">
+        Take orders, make the right treat and keep your
+        customers happy. A new customer arrives after each order.
+      </p>
+
+      <div class="shop-scene">
+        <div class="shop-sign" id="sign">Sugar & Sprinkle</div>
+        <div class="window"></div>
+        <div class="shelf" id="shelf">🧁 🍰 🍪</div>
+        <div class="customer" id="customer">🧑🏻‍🍳</div>
+        <div class="counter" id="counter">🍓 🥛 🍩</div>
+      </div>
+
+      <div class="order-card">
+        <div class="order-top">
+          <div>
+            <div class="muted">CUSTOMER ORDER</div>
+            <div class="order-name" id="customerName">
+              Mia wants a cupcake!
+            </div>
+          </div>
+          <div class="order-emoji" id="orderEmoji">🧁</div>
+        </div>
+
+        <div class="timer">
+          <div class="timer-fill" id="timerFill"></div>
+        </div>
+
+        <div class="muted" id="patienceText">
+          Customer patience: 100%
+        </div>
+      </div>
+
+      <h3 style="margin-top:17px">
+        Choose what to prepare
+      </h3>
+
+      <div class="food-grid" id="foodGrid"></div>
+
+      <div class="actions">
+        <button class="primary" id="serveBtn" disabled>
+          Serve order ✨
+        </button>
+        <button class="secondary" id="nextDayBtn">
+          Close shop & end day
+        </button>
+      </div>
+
+      <p class="muted" id="feedback" style="margin:10px 0 0">
+        Pick the treat the customer ordered.
+      </p>
+    </div>
+
+    <aside class="side-stack">
+
+      <div class="panel">
+        <h2>Today's goals</h2>
+
+        <div class="goal">
+          <span>Serve 5 customers</span>
+          <strong id="goalServe">0/5</strong>
+        </div>
+
+        <div class="goal">
+          <span>Earn 40 coins</span>
+          <strong id="goalEarn">0/40</strong>
+        </div>
+
+        <div class="goal">
+          <span>Keep reputation at 5+</span>
+          <strong id="goalRep">5 ✓</strong>
+        </div>
+
+        <p class="muted" id="goalStatus" style="margin:10px 0 0">
+          Complete all three goals for a 25-coin bonus!
+        </p>
+      </div>
+
+      <div class="panel">
+        <h2>Shop notebook</h2>
+
+        <div class="recipe-line">
+          <span>Orders served</span>
+          <strong id="served">0</strong>
+        </div>
+
+        <div class="recipe-line">
+          <span>Today's earnings</span>
+          <strong id="earnings">0 🪙</strong>
+        </div>
+
+        <div class="recipe-line">
+          <span>Ingredients</span>
+          <strong id="stockCount">15</strong>
+        </div>
+
+        <div class="recipe-line">
+          <span>Best streak</span>
+          <strong id="streak">0 🔥</strong>
+        </div>
+
+        <div class="actions">
+          <button class="secondary" id="saveBtn">Save game</button>
+          <button class="danger" id="resetBtn">Reset</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>Little tip 💌</h3>
+        <p class="muted" style="margin:0">
+          Upgrades make each day easier. Buy more stock when
+          you run low, and unlock new recipes as you level up.
+        </p>
+      </div>
+
+    </aside>
+  </div>
+</section>
+
+<section id="upgrades" class="view">
+  <div class="panel">
+    <h1>Shop & upgrades</h1>
+    <p class="muted">
+      Spend your hard-earned coins to grow your tiny café.
+    </p>
+    <div class="item-grid" id="upgradeGrid"></div>
+  </div>
+</section>
+
+<section id="recipes" class="view">
+  <div class="panel">
+    <h1>Recipe book</h1>
+    <p class="muted">
+      Your menu grows as your café levels up.
+      Each recipe needs one unit of stock.
+    </p>
+    <div class="item-grid" id="recipeGrid"></div>
+  </div>
+</section>
+
+<footer>
+  Little Sugar Shop · A tiny browser game ·
+  Your progress is saved on this device
+</footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="modal-back" id="modal">
+  <div class="modal">
+    <div style="font-size:42px">🌙</div>
+    <h2 id="modalTitle">Day complete!</h2>
+    <p id="modalText" class="muted"></p>
+    <button class="primary" id="modalBtn">
+      Open tomorrow
+    </button>
+  </div>
+</div>
+
+<script>
+const recipes = [
+  {id:'cupcake', name:'Strawberry cupcake', emoji:'🧁', price:12, level:1},
+  {id:'donut', name:'Pink donut', emoji:'🍩', price:14, level:1},
+  {id:'cookie', name:'Choco cookie', emoji:'🍪', price:10, level:1},
+  {id:'cake', name:'Berry cake', emoji:'🍰', price:20, level:2},
+  {id:'macaron', name:'Macaron', emoji:'🍬', price:18, level:3},
+  {id:'boba', name:'Strawberry boba', emoji:'🧋', price:22, level:4},
+  {id:'waffle', name:'Sweet waffle', emoji:'🧇', price:25, level:5},
+  {id:'icecream', name:'Cloud ice cream', emoji:'🍨', price:28, level:6}
+];
+
+const upgrades = [
+  {id:'stock', name:'Ingredient basket', emoji:'🧺',
+   desc:'Restock 10 ingredients.', cost:18, type:'stock'},
+
+  {id:'clock', name:'Extra patient customers', emoji:'⏰',
+   desc:'Customers wait 5 seconds longer.', cost:45, type:'patience'},
+
+  {id:'oven', name:'Better oven', emoji:'🔥',
+   desc:'Earn 3 extra coins per correct order.', cost:65, type:'bonus'},
+
+  {id:'decor', name:'Flower decorations', emoji:'🌷',
+   desc:'A prettier café and +1 reputation.', cost:55, type:'decor'},
+
+  {id:'display', name:'Dessert display', emoji:'🪞',
+   desc:'Earn 10% more coins from orders.', cost:90, type:'display'}
+];
+
+const fresh = () => ({
+  coins:50,
+  level:1,
+  day:1,
+  rep:5,
+  stock:15,
+  served:0,
+  totalServed:0,
+  earnings:0,
+  streak:0,
+  bestStreak:0,
+  patience:0,
+  bonus:0,
+  decor:false,
+  display:false,
+  unlocked:[],
+  dayServed:0,
+  dayEarned:0,
+  goalClaimed:false,
+  order:null,
+  selected:null
+});
+
+let s = fresh();
+let timer = null;
+let remaining = 0;
+let toastTimer = null;
+
+const $ = id => document.getElementById(id);
+
+function save() {
+  localStorage.setItem(
+    'sugarShopSave',
+    JSON.stringify({...s, order:null, selected:null})
+  );
+  toast('Game saved on this device!');
+}
+
+function load() {
+  try {
+    const v = JSON.parse(localStorage.getItem('sugarShopSave'));
+    if (v) s = {...fresh(), ...v};
+  } catch(e) {}
+}
+
+function toast(msg) {
+  $('toast').textContent = msg;
+  $('toast').classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(
+    () => $('toast').classList.remove('show'),
+    1900
+  );
+}
+
+function unlocked() {
+  return recipes.filter(r => r.level <= s.level);
+}
+
+function startOrder() {
+  clearInterval(timer);
+  s.selected = null;
+
+  const pool = unlocked();
+  const r = pool[Math.floor(Math.random() * pool.length)];
+
+  const names = [
+    'Mia','Aarav','Ira','Noah','Zoya',
+    'Leo','Anaya','Riya','Kabir','Aanya'
+  ];
+
+  s.order = r;
+  s.patience = 100;
+  remaining = 18 + (s.patienceUpgrade || 0) * 5;
+
+  $('customerName').textContent =
+    names[Math.floor(Math.random() * names.length)] +
+    ' wants a ' + r.name.toLowerCase() + '!';
+
+  $('orderEmoji').textContent = r.emoji;
+
+  $('customer').textContent = [
+    '🧑🏻','👩🏽','🧒🏼','👩🏻','🧑🏾'
+  ][Math.floor(Math.random() * 5)];
+
+  $('feedback').textContent =
+    'Choose the correct treat before the customer runs out of patience.';
+
+  renderFood();
+  updateTimer();
+
+  timer = setInterval(() => {
+    remaining -= .2;
+
+    s.patience = Math.max(
+      0,
+      remaining / (18 + (s.patienceUpgrade || 0) * 5) * 100
+    );
+
+    updateTimer();
+
+    if (remaining <= 0) {
+      missOrder();
+    }
+  }, 200);
+}
+
+function updateTimer() {
+  $('timerFill').style.width =
+    Math.max(0, s.patience) + '%';
+
+  $('timerFill').style.background =
+    s.patience < 30 ? '#df8d82' : '#8fbd8b';
+
+  $('patienceText').textContent =
+    'Customer patience: ' + Math.ceil(s.patience) + '%';
+}
+
+function renderFood() {
+  $('foodGrid').innerHTML = unlocked().map(r => `
+    <button class="food ${s.selected === r.id ? 'selected' : ''}"
+      data-food="${r.id}">
+      <span class="emoji">${r.emoji}</span>
+      <strong>${r.name}</strong>
+      <small>${r.price} coins</small>
+    </button>
+  `).join('');
+
+  document.querySelectorAll('[data-food]').forEach(b => {
+    b.onclick = () => {
+      s.selected = b.dataset.food;
+      renderFood();
+      $('serveBtn').disabled = false;
+    };
+  });
+
+  $('serveBtn').disabled = !s.selected;
+}
+
+function missOrder() {
+  clearInterval(timer);
+
+  s.rep = Math.max(0, s.rep - 1);
+  s.streak = 0;
+
+  $('feedback').textContent =
+    'Oh no! The customer left. Reputation -1.';
+
+  update();
+  setTimeout(startOrder, 1100);
+}
+
+function serve() {
+  if (!s.order || !s.selected) return;
+
+  if (s.stock <= 0) {
+    toast('You are out of ingredients! Restock in the upgrades tab.');
+    return;
+  }
+
+  clearInterval(timer);
+
+  if (s.selected !== s.order.id) {
+    s.rep = Math.max(0, s.rep - 1);
+    s.streak = 0;
+
+    $('feedback').textContent =
+      'Not quite! The customer wanted ' +
+      s.order.name + '. Reputation -1.';
+
+    update();
+    setTimeout(startOrder, 1300);
+    return;
+  }
+
+  const base = s.order.price;
+
+  const tip = Math.floor(
+    base * (s.patience / 100) * .25
+  );
+
+  const gain =
+    base + tip + s.bonus +
+    (s.display ? Math.floor(base * .1) : 0);
+
+  s.coins += gain;
+  s.earnings += gain;
+  s.dayEarned += gain;
+  s.stock--;
+
+  s.served++;
+  s.totalServed++;
+  s.dayServed++;
+
+  s.streak++;
+  s.bestStreak = Math.max(s.bestStreak, s.streak);
+
+  s.rep = Math.min(100, s.rep + (s.decor ? 2 : 1));
+
+  $('feedback').textContent =
+    'Perfect order! +' + gain + ' coins (includes a patience tip).';
+
+  $('counter').textContent = '✨ ' + s.order.emoji + ' ✨';
+
+  update();
+  checkLevel();
+  checkGoals();
+
+  setTimeout(startOrder, 1100);
+}
+
+function checkLevel() {
+  const next = Math.floor(s.totalServed / 5) + 1;
+
+  if (next > s.level) {
+    s.level = next;
+    toast('Level up! New recipes unlocked 🎉');
+  }
+}
+
+function checkGoals() {
+  if (
+    !s.goalClaimed &&
+    s.dayServed >= 5 &&
+    s.dayEarned >= 40 &&
+    s.rep >= 5
+  ) {
+    s.coins += 25;
+    s.goalClaimed = true;
+    toast('Daily goals complete! +25 bonus coins 🎁');
+  }
+}
+
+function update() {
+  $('coins').textContent = s.coins;
+  $('level').textContent = s.level;
+  $('day').textContent = s.day;
+  $('rep').textContent = s.rep;
+
+  $('served').textContent = s.totalServed;
+  $('earnings').textContent = s.dayEarned + ' 🪙';
+  $('stockCount').textContent = s.stock;
+  $('streak').textContent = s.bestStreak + ' 🔥';
+
+  $('goalServe').textContent =
+    Math.min(s.dayServed, 5) + '/5';
+
+  $('goalEarn').textContent =
+    Math.min(s.dayEarned, 40) + '/40';
+
+  $('goalRep').textContent =
+    s.rep >= 5 ? '5+ ✓' : s.rep + '/5';
+
+  $('goalStatus').textContent = s.goalClaimed
+    ? 'All goals completed. Lovely work!'
+    : 'Complete all three goals for a 25-coin bonus!';
+
+  $('sign').textContent = s.decor
+    ? '🌷 Sugar & Sprinkle 🌷'
+    : 'Sugar & Sprinkle';
+
+  $('shelf').textContent = s.display
+    ? '🧁 🍰 🍪 🍬'
+    : '🧁 🍰 🍪';
+
+  renderUpgrades();
+  renderRecipes();
+}
+
+function renderUpgrades() {
+  $('upgradeGrid').innerHTML = upgrades.map(u => {
+    let bought =
+      u.type === 'patience'
+        ? (s.patienceUpgrade || 0) > 0
+        : u.type === 'bonus'
+        ? s.bonus > 0
+        : u.type === 'decor'
+        ? s.decor
+        : u.type === 'display'
+        ? s.display
+        : false;
+
+    let cost =
+      u.type === 'patience' && s.patienceUpgrade
+        ? u.cost + 30
+        : u.cost;
+
+    return `
+      <div class="item">
+        <div class="big">${u.emoji}</div>
+        <h3>${u.name}</h3>
+        <p class="muted">${u.desc}</p>
+        <strong>${bought ? 'Owned / upgraded' : cost + ' 🪙'}</strong>
+        <button class="${
+          bought && u.type !== 'patience' && u.type !== 'stock'
+            ? 'secondary'
+            : 'primary'
+        }"
+          data-up="${u.id}"
+          ${s.coins < cost ||
+          (bought && u.type !== 'patience' && u.type !== 'stock')
+            ? 'disabled'
+            : ''}>
+          ${
+            u.type === 'stock'
+              ? 'Restock'
+              : bought && u.type !== 'patience'
+              ? 'Purchased'
+              : 'Buy upgrade'
+          }
+        </button>
+      </div>
+    `;
+  }).join('');
+
+  document.querySelectorAll('[data-up]').forEach(b => {
+    b.onclick = () => buy(b.dataset.up);
+  });
+}
+
+function buy(id) {
+  const u = upgrades.find(x => x.id === id);
+
+  let cost = u.cost;
+
+  if (id === 'clock' && s.patienceUpgrade) {
+    cost += 30;
+  }
+
+  if (s.coins < cost) return;
+
+  s.coins -= cost;
+
+  if (id === 'stock') s.stock += 10;
+
+  if (id === 'clock') {
+    s.patienceUpgrade = (s.patienceUpgrade || 0) + 1;
+  }
+
+  if (id === 'oven') s.bonus += 3;
+  if (id === 'decor') s.decor = true;
+  if (id === 'display') s.display = true;
+
+  toast(u.name + ' added to your café!');
+  update();
+}
+
+function renderRecipes() {
+  $('recipeGrid').innerHTML = recipes.map(r => `
+    <div class="item">
+      <div class="big">${r.emoji}</div>
+      <h3>${r.name}</h3>
+      <p class="muted">Sell price: ${r.price} coins</p>
+      <strong>
+        ${s.level >= r.level
+          ? 'Unlocked'
+          : 'Unlocks at level ' + r.level}
+      </strong>
+    </div>
+  `).join('');
+}
+
+function endDay() {
+  clearInterval(timer);
+
+  $('modalTitle').textContent =
+    'Day ' + s.day + ' complete!';
+
+  $('modalText').textContent =
+    `You served ${s.dayServed} customers and earned ` +
+    `${s.dayEarned} coins today. ` +
+    `${s.goalClaimed
+      ? 'You also earned your daily bonus!'
+      : 'Keep practising to complete tomorrow’s goals.'}`;
+
+  $('modal').classList.add('show');
+}
+
+function newDay() {
+  s.day++;
+  s.dayServed = 0;
+  s.dayEarned = 0;
+  s.goalClaimed = false;
+
+  $('modal').classList.remove('show');
+
+  s.stock = Math.max(s.stock, 3);
+
+  update();
+  startOrder();
+}
+
+// Navigation
+document.querySelectorAll('.tab').forEach(b => {
+  b.onclick = () => {
+    document.querySelectorAll('.tab').forEach(x =>
+      x.classList.remove('active')
+    );
+
+    document.querySelectorAll('.view').forEach(x =>
+      x.classList.remove('active')
+    );
+
+    b.classList.add('active');
+    $(b.dataset.view).classList.add('active');
+  };
+});
+
+// Game controls
+$('serveBtn').onclick = serve;
+$('nextDayBtn').onclick = endDay;
+$('modalBtn').onclick = newDay;
+$('saveBtn').onclick = save;
+
+$('resetBtn').onclick = () => {
+  if (confirm('Start a brand-new café? Your saved game will be replaced.')) {
+    localStorage.removeItem('sugarShopSave');
+    s = fresh();
+    update();
+    startOrder();
+    toast('A fresh new café!');
+  }
+};
+
+// Start game
+load();
+update();
+startOrder();
+</script>
+</body>
+</html>
